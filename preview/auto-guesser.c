@@ -41,9 +41,9 @@ int main(){
             printf("The number is %d!\n", guess);
             break;
         } else if(guess > num) {
-            max = guess; // Refresh max if we guess a larger number
+            max = guess - 1; // Refresh max if we guess a larger number
         } else {
-            min = guess; // Refresh min if we guess a smaller number
+            min = guess + 1; // Refresh min if we guess a smaller number
         }
         
     printf("min: %d , max %d \n", min, max);
