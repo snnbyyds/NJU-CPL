@@ -23,7 +23,7 @@ int main(){
         printf("Generated number: %d\n", num);
         break;
     case 0:
-        printf("Input your number(INT_MIN~INT_MAX):\n");
+        printf("Input your number(INT_MIN+1~INT_MAX-1):\n");
         scanf("%d", &num);
         break;
     default:
