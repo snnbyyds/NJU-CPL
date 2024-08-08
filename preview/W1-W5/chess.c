@@ -21,6 +21,9 @@ int main(){
     int is_win = 0;
     do
     {
+        // clear first (kang from @why)
+        system("clear");
+
         // draw a chess board (kang from @why)
         printf("  ");
         for (int i = 0; i < COL; i++)
@@ -47,14 +50,13 @@ int main(){
             printf("|\033[0m\n");
         }
         
-
         // prompt b4 input
         prompt:
         color == BLACK ? printf("black's turn\n") : printf("white's turn\n");
 
         // player input loc
         scanf("%d %d", &y, &x);
-        if (map[x][y] != 0)
+        if (map[x][y] != 0 || x < 0 || y < 0 || x > ROW || y > COL)
         {
             printf("Illegal step!\n");
             goto prompt;
@@ -72,18 +74,19 @@ int main(){
         // count steps
         color == BLACK ? black_step ++ : white_step ++;
         
-        // wins? (calc in 4 directions)
-        for (int i = 2; i <= ROW - 3; i++)
+        // wins?
+        for (int i = 0; i < ROW; i++)
         {
-            for (int j = 2; j < COL - 3; j++)
+            for (int j = 0; j < COL; j++)
             {
                 if (map[i][j] != BLANK && 
-                (abs(map[i - 2][j] + map[i - 1][j] + map[i][j] + map[i + 1][j] + map[i + 2][j])== 5 ||
-                 abs(map[i - 2][j - 2] + map[i - 1][j - 1] + map[i][j] + map[i + 1][j + 1] + map[i + 2][j + 2])== 5 ||
-                 abs(map[i - 2][j + 2] + map[i - 1][j + 1] + map[i][j] + map[i + 1][j - 1] + map[i + 2][j - 2])== 5 ||
-                 abs(map[i][j - 2] + map[i][j - 1] + map[i][j] + map[i][j + 1] + map[i][j + 2])== 5))
+                ((abs(map[i - 2][j] + map[i - 1][j] + map[i][j] + map[i + 1][j] + map[i + 2][j])== 5 && i >= 2 && j <= COL - 3) ||
+                 (abs(map[i - 2][j - 2] + map[i - 1][j - 1] + map[i][j] + map[i + 1][j + 1] + map[i + 2][j + 2])== 5 && i >= 2 && j >= 2 && i <= ROW - 3 && j <= COL - 3) ||
+                 (abs(map[i - 2][j + 2] + map[i - 1][j + 1] + map[i][j] + map[i + 1][j - 1] + map[i + 2][j - 2])== 5 && i >= 2 && j >= 2 && i <= ROW - 3 && j <= COL - 3) ||
+                 (abs(map[i][j - 2] + map[i][j - 1] + map[i][j] + map[i][j + 1] + map[i][j + 2])== 5 && j >= 2 && i <= ROW - 3)))
                 {
                     is_win = 1;
+                    goto win;
                 }   
             }
         }
@@ -92,7 +95,7 @@ int main(){
         color = -color;
     } while (is_win == 0);
     
-    color = -color; // HACK
+    win:
     color == BLACK ? printf("black wins\n") : printf("white wins\n");
 
     printf("black_step: %d, white_step: %d\n", black_step, white_step);
